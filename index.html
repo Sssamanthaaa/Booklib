@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Margin - reading companion</title>
+<meta name="theme-color" content="#0f2236">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<style>
+:root{
+  --bg:#ebe8e5; --card:#ffffff; --ink:#2b2622; --muted:#7a6f64; --line:#e6dccb;
+  --accent:#b4532a; --accent-ink:#fff; --soft:#f0e4d0; --good:#4d7c4a;
+  --shadow:0 1px 2px rgba(60,40,20,.08),0 6px 18px rgba(60,40,20,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#1d1916; --card:#272220; --ink:#f0e8dc; --muted:#a2958a; --line:#3a332e; --accent:#e0804f; --accent-ink:#1d1916; --soft:#33291f; --good:#8cc088; --shadow:none}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:16px/1.45 Georgia,"Iowan Old Style",serif;display:flex;justify-content:center}
+button,input,textarea,select{font:inherit;color:inherit}
+.sans{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+#app{width:100%;max-width:480px;height:100dvh;display:flex;flex-direction:column;position:relative;background:var(--bg);overflow:hidden}
+main{flex:1;overflow-y:auto;padding:20px 16px 24px}
+h1{font-size:28px;margin:0 0 4px;letter-spacing:-.01em}
+h2{font-size:13px;margin:24px 0 10px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-family:system-ui,sans-serif;font-weight:600}
+.sub{color:var(--muted);margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.row{display:flex;align-items:center;gap:12px}
+.grow{flex:1;min-width:0}
+.btn{border:0;border-radius:12px;padding:12px 18px;background:var(--accent);color:var(--accent-ink);font-family:system-ui,sans-serif;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--line)}
+.btn.small{padding:7px 12px;font-size:14px;border-radius:10px}
+.btn.block{width:100%}
+.btn:active{transform:scale(.98)}
+.muted{color:var(--muted)} .small{font-size:14px}
+.cover{width:46px;height:64px;border-radius:4px 8px 8px 4px;flex:none;display:flex;align-items:flex-end;padding:5px;color:#fff;font-size:10px;line-height:1.1;font-family:system-ui,sans-serif;font-weight:600;box-shadow:inset 3px 0 0 rgba(0,0,0,.18),0 2px 6px rgba(0,0,0,.2);overflow:hidden}
+.cover.big{width:64px;height:90px;font-size:12px}
+.progress{height:6px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:6px}
+.progress i{display:block;height:100%;background:var(--accent);border-radius:99px}
+nav{display:flex;border-top:1px solid var(--line);background:var(--card);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:0;padding:10px 0 9px;font-family:system-ui,sans-serif;font-size:12px;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--accent);font-weight:600}
+.recap{background:var(--soft);border-left:3px solid var(--accent);border-radius:4px 14px 14px 4px;padding:12px 14px}
+.recap .tag{font:600 11px system-ui,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:4px}
+.recap p{margin:4px 0}
+.chip{display:inline-block;padding:3px 10px;border-radius:99px;background:var(--soft);font:13px system-ui,sans-serif;margin:2px 4px 2px 0}
+.chip.btnlike{cursor:pointer;border:1px solid transparent}
+.chip.sel{background:var(--accent);color:var(--accent-ink)}
+.ring{--p:0;width:84px;height:84px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--soft) 0);display:grid;place-items:center;flex:none}
+.ring b{width:66px;height:66px;border-radius:50%;background:var(--card);display:grid;place-items:center;font:700 17px system-ui,sans-serif;text-align:center;line-height:1.1}
+.ring small{display:block;font:500 10px system-ui,sans-serif;color:var(--muted)}
+.week{display:flex;gap:6px;margin-top:10px}
+.week div{flex:1;text-align:center;font:11px system-ui,sans-serif;color:var(--muted)}
+.week span{display:block;height:26px;border-radius:8px;background:var(--soft);margin-bottom:3px}
+.week .done span{background:var(--accent)} .week .rest span{background:transparent;border:1.5px dashed var(--accent)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:16px 0 12px}
+.tabs button{background:none;border:0;padding:8px 12px;font:600 14px system-ui,sans-serif;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer}
+.tabs button.on{color:var(--accent);border-color:var(--accent)}
+.note{padding:10px 0;border-bottom:1px solid var(--line)}
+.note:last-child{border:0}
+.note .meta{font:12px system-ui,sans-serif;color:var(--muted);margin-bottom:2px}
+.note.quote .t{font-style:italic;padding-left:10px;border-left:2px solid var(--line)}
+.back{background:none;border:0;color:var(--accent);font:600 14px system-ui,sans-serif;padding:0 0 12px;cursor:pointer}
+.empty{text-align:center;color:var(--muted);padding:26px 10px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:120px;margin-top:8px}
+.bars div{flex:1;text-align:center;font:11px system-ui,sans-serif;color:var(--muted);display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.bars i{display:block;background:var(--accent);border-radius:6px 6px 2px 2px;min-height:3px;margin-bottom:4px;opacity:.9}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats .card{text-align:center;padding:12px 6px}
+.stats b{display:block;font:700 22px system-ui,sans-serif}
+.stats span{font:12px system-ui,sans-serif;color:var(--muted)}
+/* sheet */
+.scrim{position:absolute;inset:0;background:rgba(20,12,6,.45);display:flex;align-items:flex-end;z-index:20;animation:fade .15s}
+.sheet{background:var(--card);width:100%;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88%;overflow:auto;animation:up .2s}
+.sheet h3{margin:0 0 12px;font-size:20px}
+label{display:block;font:600 12px system-ui,sans-serif;color:var(--muted);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.06em}
+input,textarea,select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg)}
+textarea{min-height:80px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+@keyframes fade{from{opacity:0}}
+/* session */
+.timer{font:300 64px/1 system-ui,sans-serif;text-align:center;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin:26px 0 6px}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}
+.quick button{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 4px;font:600 13px system-ui,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.quick button b{font-size:22px;font-weight:400}
+.focus-mode #app, #app.focus{background:#0e0c0b;--bg:#0e0c0b;--card:#181513;--ink:#b8ada0;--muted:#6f655b;--line:#2a241f;--soft:#1f1a16;--accent:#c4703f;--accent-ink:#0e0c0b}
+#app.focus .timer{color:#8a7f73}
+.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font:600 14px system-ui,sans-serif;z-index:30;animation:fade .2s;white-space:nowrap}
+.pill{font:600 12px system-ui,sans-serif;padding:3px 9px;border-radius:99px;background:var(--soft);color:var(--accent)}
+/* ---------- glass bookshelf ---------- */
+.masthead{text-align:center;margin:6px 0 18px}
+.masthead small{font:600 14px system-ui,sans-serif;color:var(--muted)}
+.masthead h1{font:400 54px/1 "Bodoni MT","Didot","Playfair Display",Georgia,serif;letter-spacing:-.02em;margin:2px 0 0;text-transform:uppercase}
+.shelf{margin:0 -16px 8px}
+.shelf-head{display:flex;align-items:center;gap:8px;padding:0 16px;font-family:system-ui,sans-serif}
+.shelf-head h3{margin:0;font-size:16px;font-weight:600;flex:1}
+.shelf-head span{color:var(--muted);font-size:13px}
+.shelf-head button{border:0;background:none;color:var(--muted);font-size:18px;padding:2px 6px;cursor:pointer}
+.stage{position:relative;padding-top:6px}
+.track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;padding:12px 16px 30px;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.glass{position:absolute;left:-6px;right:-6px;bottom:18px;height:62px;border-radius:7px;pointer-events:none;z-index:2;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--g) 78%,transparent),color-mix(in srgb,var(--g) 62%,transparent));
+  backdrop-filter:blur(1.5px) saturate(1.2);-webkit-backdrop-filter:blur(1.5px) saturate(1.2);
+  box-shadow:0 12px 20px rgba(30,20,10,.22),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(0,0,0,.12)}
+.glass i{position:absolute;top:50%;width:11px;height:11px;margin-top:-5px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#9aa 55%,#566);box-shadow:0 1px 2px rgba(0,0,0,.4)}
+.glass i:first-child{left:16px}.glass i:last-child{right:16px}
+.bk{flex:none;scroll-snap-align:start;width:104px;height:164px;position:relative;overflow:hidden;cursor:pointer;border:0;text-align:left;padding:10px 9px;display:flex;flex-direction:column;justify-content:flex-start;gap:6px;
+  background:var(--c);color:var(--fg);border-radius:2px 4px 4px 2px;box-shadow:0 5px 10px rgba(30,20,10,.28),inset 3px 0 0 rgba(255,255,255,.14);transition:transform .15s}
+.bk:active{transform:scale(.97)}
+.bk .t{font:800 13.5px/1 "Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:-.03em;overflow-wrap:break-word;overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical}
+.bk .a{font:600 9px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+.bk.v1{background:linear-gradient(var(--c) 64%,rgba(0,0,0,.3) 64%)}
+.bk.v1 .t{font:700 14px/1.1 Georgia,serif;text-transform:none;letter-spacing:0;text-align:center;padding-top:6px}
+.bk.v2{box-shadow:0 5px 10px rgba(30,20,10,.28),inset 0 0 0 6px rgba(255,255,255,.88)}
+.bk.v2::before{content:"";position:absolute;right:14px;top:44px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.22)}
+.bk.v2 .t{font:700 15px/1 Georgia,serif;text-transform:none;letter-spacing:0;padding:6px 4px 0}
+.bk.v2 .a{padding:0 4px 4px}
+.bk .badge{position:absolute;right:5px;top:5px;font:700 9px system-ui,sans-serif;background:rgba(0,0,0,.45);color:#fff;padding:2px 6px;border-radius:99px;z-index:1}
+.bk.sel{outline:3px solid var(--accent);outline-offset:2px}
+.bk.add{background:transparent;border:2px dashed var(--line);box-shadow:none;color:var(--muted);align-items:center;justify-content:center;font:300 40px system-ui,sans-serif}
+.hint{color:var(--muted);font:italic 14px Georgia,serif;align-self:center;padding:0 4px 20px}
+/* ---------- timer screen: stacked pastel cards on navy ---------- */
+#app.tscr{background:#0f2236;--bg:#0f2236}
+#app.tscr main{padding:14px 12px 0}
+#app.focus.tscr{background:#05090d}
+.tcard{border-radius:30px;padding:18px 20px;color:#10243a;font-family:"Helvetica Neue",Inter,system-ui,sans-serif;position:relative;margin-bottom:8px;text-align:left}
+.tcard.mint{background:#b9f1e0}.tcard.lime{background:#c8f52f}.tcard.pink{background:#f9d4ec}.tcard.blue{background:#5db4ee}
+.tcard.notch::before{content:"";position:absolute;top:0;right:38px;width:50px;height:11px;background:#0f2236;border-radius:0 0 12px 12px}
+.trow{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px}
+.trow>span:first-child:not(.ico){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ico{width:34px;height:34px;border-radius:50%;background:#10243a;color:#f9d4ec;display:grid;place-items:center;flex:none;font-size:16px}
+.tcard.blue .ico{color:#5db4ee}
+.more{border:1.5px solid #10243a;background:none;border-radius:99px;padding:6px 14px;font:600 13px system-ui,sans-serif;cursor:pointer;color:#10243a;flex:none}
+.timer{display:grid;grid-template-columns:1fr 18px 1fr 18px 1fr;align-items:baseline;text-align:center;font:500 64px/1 "Helvetica Neue",Inter,system-ui,sans-serif;letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin:16px 0 4px}
+.timer i{font-style:normal;opacity:.9;margin-left:-6px}
+.timer.over{color:#0b6a50}
+.tlab{display:grid;grid-template-columns:1fr 18px 1fr 18px 1fr;text-align:center;font:600 12px system-ui,sans-serif;letter-spacing:.1em}
+.dots{display:flex;align-items:center;margin:16px 4px 8px}
+.dots i{width:16px;height:16px;border-radius:50%;background:#10243a;opacity:.25;flex:none;font-style:normal;transition:opacity .3s}
+.dots i.on{opacity:1}
+.dots i:last-child{width:32px;height:32px;display:grid;place-items:center;color:#b9f1e0;font:700 16px system-ui,sans-serif}
+.dots s{flex:1;height:2px;background:rgba(16,36,58,.18);margin:0 8px}
+.tsub{font:500 13px system-ui,sans-serif;opacity:.75;text-align:center;margin-top:4px}
+.tcard .k{font:600 15px system-ui,sans-serif}
+.huge{font:500 88px/1 "Helvetica Neue",Inter,system-ui,sans-serif;letter-spacing:-.05em;margin:6px 0 2px;display:flex;align-items:baseline;gap:8px;justify-content:center}
+.huge small{font:600 18px system-ui,sans-serif;letter-spacing:0}
+.lime .k{display:block;text-align:center}
+.now{display:flex;align-items:center;gap:6px;margin:14px 0 12px}
+.now b{font:800 18px/1.1 "Helvetica Neue",Inter,system-ui,sans-serif;text-transform:uppercase;flex:1;min-width:0}
+.rb{border:0;border-radius:99px;min-width:38px;height:38px;background:#10243a;color:#f9d4ec;font:700 14px system-ui,sans-serif;cursor:pointer;padding:0 8px}
+.stat3{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(16,36,58,.15);padding-top:12px;font-family:system-ui,sans-serif}
+.stat3 small{display:block;font:500 13px system-ui,sans-serif;opacity:.7}
+.stat3 b{font:700 26px/1.1 "Helvetica Neue",Inter,system-ui,sans-serif}
+.stat3 u{text-decoration:none;font:500 13px system-ui,sans-serif;opacity:.7}
+.qa{display:flex;gap:8px;margin-top:14px}
+.qa button{flex:1;border:0;border-radius:99px;background:#10243a;color:#fff;padding:11px 0;font:600 13px system-ui,sans-serif;cursor:pointer}
+.linkbtn{display:block;width:100%;border:2px dashed rgba(16,36,58,.45)!important;background:transparent!important;color:#5db4ee!important;font:600 15px system-ui,sans-serif;text-align:center;cursor:pointer}
+.linkbtn::before{display:none}
+#ytslot{height:176px;border-radius:18px;background:rgba(16,36,58,.15);margin-top:12px}
+.ctrl{position:sticky;bottom:10px;z-index:6;margin:8px 0 10px;background:#5db4ee;border-radius:99px;display:flex;justify-content:space-around;padding:8px;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.ctrl button{border:0;width:64px;height:42px;border-radius:99px;background:transparent;color:#10243a;font-size:19px;cursor:pointer}
+.ctrl button.on{background:#10243a;color:#5db4ee}
+#ytwrap{position:fixed;z-index:4;display:none;background:#000;border-radius:18px;overflow:hidden}
+#ytwrap iframe{width:100%;height:100%;border:0;display:block}
+#ytwrap.mini{right:10px;bottom:76px;width:150px;height:84px}
+#app.focus .tcard{filter:grayscale(.85) brightness(.55)}
+/* ---------- navy theme for stats + book pages ---------- */
+#app.navy{background:#0f2236;--bg:#0f2236;color:#e8f2f0}
+#app.navy main{padding:14px 12px 24px}
+#app.navy h1{color:#f1f7f5;font-family:"Helvetica Neue",Inter,system-ui,sans-serif;font-weight:800;letter-spacing:-.02em}
+#app.navy .sub{color:#8ea6bb;margin-bottom:14px}
+#app.navy .back{color:#c8f52f;padding-left:6px}
+#app.navy>nav{background:#0b1a2b;border-top:0}
+#app.navy>nav button{color:#7f95ab}
+#app.navy>nav button.on{color:#c8f52f}
+#app.navy h1{padding-left:6px}#app.navy .sub{padding-left:6px}
+.btitle{font:800 22px/1.1 "Helvetica Neue",Inter,system-ui,sans-serif;letter-spacing:-.02em}
+.bk.mini{width:68px;height:98px;padding:7px 6px;flex:none;cursor:default}
+.bk.mini .t{font-size:9px;-webkit-line-clamp:6;padding:2px 0 0}.bk.mini::before{display:none}
+#statusSel{width:auto;border:1.5px solid #10243a;background:transparent;color:#10243a;border-radius:99px;padding:6px 12px;font:600 13px system-ui,sans-serif}
+.pbar{height:10px;border-radius:99px;background:rgba(16,36,58,.18);overflow:hidden;margin:8px 0 6px}
+.pbar i{display:block;height:100%;background:#10243a;border-radius:99px}
+.navbtn{display:block;width:100%;margin-top:14px;border:0;border-radius:99px;background:#10243a;color:#c8f52f;padding:15px;font:700 16px system-ui,sans-serif;cursor:pointer}
+.tcard .recap{background:rgba(255,255,255,.6);border-left-color:#10243a;color:#10243a}
+.tcard .recap .tag{color:#10243a}
+.tcard .muted{color:rgba(16,36,58,.65)}
+.tcard .note{border-bottom:1px solid rgba(16,36,58,.15);padding:10px 0}
+.tcard .note:last-child{border:0}
+.tcard .note .meta{color:rgba(16,36,58,.6)}
+.tcard .note.quote .t{border-left-color:#10243a}
+.tcard .empty{color:rgba(16,36,58,.6)}
+.tcard .chip{background:rgba(255,255,255,.7)}
+.ptabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.ptabs button{border:1.5px solid #10243a;background:transparent;color:#10243a;border-radius:99px;padding:7px 13px;font:600 13px system-ui,sans-serif;cursor:pointer}
+.ptabs button.on{background:#10243a;color:#b9f1e0}
+.wk{display:flex;justify-content:space-between;margin:12px 2px 0}
+.wk div{text-align:center;font:600 11px system-ui,sans-serif}
+.wk i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:rgba(16,36,58,.14);margin:0 auto 4px;font-style:normal;font-weight:700;font-size:15px;color:#b9f1e0}
+.wk .done i{background:#10243a}
+.wk .rest i{background:transparent;border:2px dashed #10243a}
+.tcard .bars{height:150px;margin-top:12px}
+.tcard .bars div{color:#10243a;font-weight:600}
+.tcard .bars em{font:600 10px system-ui,sans-serif;font-style:normal;margin-bottom:2px;min-height:12px}
+.tcard .bars i{background:#10243a;border-radius:8px 8px 3px 3px;opacity:1;margin-bottom:6px}
+/* ---------- navy treatment for shelves ---------- */
+#app.navy .masthead small{color:#8ea6bb}
+#app.navy .masthead h1{color:#f1f7f5;font-family:"Bodoni MT","Didot","Playfair Display",Georgia,serif;font-weight:400;letter-spacing:-.02em;padding:0}
+#app.navy .shelf-head span,#app.navy .shelf-head button{color:#8ea6bb}
+#app.navy .hint{color:#8ea6bb}
+#app.navy .bk.add{border-color:#2c4258;color:#8ea6bb}
+#app.navy .bk.sel{outline-color:#c8f52f}
+#app.navy .shelf{margin:0 -12px 14px}#app.navy .track{padding-left:22px;padding-right:22px}#app.navy .shelf-head{padding:0 22px}#app.navy .sub{font-family:system-ui,sans-serif}
+/* ---------- unified theme: one navy + pastel system everywhere ---------- */
+:root{--bg:#0f2236;--card:#162f48;--ink:#e8f2f0;--muted:#8ea6bb;--line:#2c4258;--accent:#c8f52f;--accent-ink:#10243a;--soft:#1b3550;--good:#c8f52f;--shadow:none;color-scheme:dark}
+html{background:#0f2236}
+body{background:#0f2236;font:16px/1.45 "Helvetica Neue",Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+#app{background:var(--bg)}
+main{padding:14px 12px 24px}
+h1{font:800 30px/1.1 "Helvetica Neue",Inter,system-ui,sans-serif;letter-spacing:-.02em;margin:4px 6px;color:#f1f7f5}
+.sub{margin:2px 6px 14px;color:var(--muted);font:400 15px system-ui,sans-serif}
+.phead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{color:#c8f52f;font:600 14px system-ui,sans-serif;padding:0 6px 10px}
+.btn{border-radius:99px;font-weight:700}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.more.solid{background:#c8f52f;border-color:#c8f52f;color:#10243a}
+.toast{background:#c8f52f;color:#10243a}
+.recap{font-family:inherit}
+.recap p{font-family:system-ui,sans-serif}
+/* sheets match the cards */
+.scrim{background:rgba(5,12,20,.6)}
+.sheet{background:#b9f1e0;color:#10243a;border-radius:30px 30px 0 0;padding:22px 20px calc(20px + env(safe-area-inset-bottom));font-family:"Helvetica Neue",Inter,system-ui,sans-serif}
+.sheet h3{font:800 22px/1.1 "Helvetica Neue",Inter,system-ui,sans-serif;letter-spacing:-.02em;margin:0 0 12px}
+.sheet label{color:rgba(16,36,58,.65)}
+.sheet input,.sheet textarea{background:#fff;color:#10243a;border:0;border-radius:16px}
+.sheet input:focus,.sheet textarea:focus{outline:2px solid #10243a}
+.sheet .btn{background:#10243a;color:#c8f52f}
+.sheet .btn.ghost{background:transparent;color:#10243a;border:1.5px solid #10243a}
+.sheet .chip{background:rgba(16,36,58,.12);color:#10243a}
+.sheet .chip.sel{background:#10243a;color:#b9f1e0}
+.sheet .muted{color:rgba(16,36,58,.65)}
+.sheet .recap{background:rgba(255,255,255,.6);border-left-color:#10243a;color:#10243a}
+.sheet .recap .tag{color:#10243a}
+.chk{display:flex;gap:12px;align-items:center;font:700 16px system-ui,sans-serif;text-transform:none;letter-spacing:0;color:#10243a;margin:0}
+.chk input{width:22px;height:22px;flex:none;accent-color:#10243a}
+.chk span{display:block;font-weight:400;font-size:13px;opacity:.7}
+/* chapters + timeline */
+.chh{display:flex;justify-content:space-between;font:800 12px system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;margin:16px 0 2px;padding-bottom:4px;border-bottom:2px solid #10243a}
+.ptabs+.chh{margin-top:4px}
+.chh span{opacity:.55}
+.tl{margin:8px 0 0 6px;border-left:2px solid rgba(16,36,58,.28)}
+.tln{position:relative;padding:0 0 18px 20px}
+.tln i{position:absolute;left:-7px;top:3px;width:12px;height:12px;border-radius:50%;background:#10243a}
+.tln.now i{background:#c8f52f;box-shadow:0 0 0 3px #10243a}
+.tlh{font:800 12px system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em}
+.tln p{margin:4px 0;font:500 15px/1.35 system-ui,sans-serif}
+.tln p span{opacity:.55;font-size:12px}
+.tlc{margin-top:6px;font:600 12px system-ui,sans-serif}
+.tcard .tlc .chip{background:rgba(255,255,255,.7)}
+.qa{flex-wrap:wrap}
+.qa button{flex:1 1 calc(50% - 4px)}
+/* ---------- spine shelves ---------- */
+.sshelf{margin:0 0 20px}
+#app .sshelf .shelf-head{padding:0 8px 10px}
+.sstage{background:#060f19;border-radius:24px;padding:22px 14px 0;overflow:hidden;box-shadow:inset 0 0 0 1px #1b3550}
+.strack{display:flex;align-items:flex-end;gap:2px;overflow-x:auto;padding:16px 2px 0;scrollbar-width:none;min-height:290px}
+.strack::-webkit-scrollbar{display:none}
+.sline{height:9px;margin:0 -14px;background:linear-gradient(#2f4a64,#193049)}
+.sp{flex:none;position:relative;border:0;padding:12px 0 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:6px;color:var(--fg);background:var(--c);border-radius:2px 2px 0 0;overflow:hidden;
+  box-shadow:inset 2px 0 0 rgba(255,255,255,.2),inset -2px 0 0 rgba(0,0,0,.25);transition:transform .15s}
+.sp .st{writing-mode:vertical-rl;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:0;flex:0 1 auto}
+.sp .sa{writing-mode:vertical-rl;font:600 8px system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:26%;flex:none}
+.sp.v0 .st{font:800 calc(13px*var(--k,1)) "Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.sp.v1{background:#efe7d6;color:#10243a;border-top:16px solid var(--c)}
+.sp.v1 .st{font:italic 600 calc(14px*var(--k,1)) Georgia,serif}
+.sp.v2 .st{font:700 calc(12px*var(--k,1)) "Courier New",monospace;text-transform:uppercase;letter-spacing:.06em}
+.sp.v3 .st{font:900 calc(17px*var(--k,1)) Impact,"Arial Black",sans-serif;text-transform:uppercase}
+.sp.v4{background:#efe7d6;color:#10243a;border-bottom:18px solid var(--c)}
+.sp.v4 .st{font:400 calc(15px*var(--k,1)) "Bodoni MT",Didot,Georgia,serif;letter-spacing:.05em;text-transform:uppercase}
+.sp.v5{background:linear-gradient(var(--c) 72%,rgba(0,0,0,.35) 72%)}
+.sp.v5 .st{font:600 calc(14px*var(--k,1)) system-ui,sans-serif;text-transform:lowercase}
+.sp:hover{transform:translateY(-6px)}
+.sp.reading{transform:translateY(-14px)}
+.sp.reading::after{content:"";position:absolute;top:0;left:50%;margin-left:-4px;width:8px;height:20px;background:#e23c3c;clip-path:polygon(0 0,100% 0,100% 100%,50% 75%,0 100%)}
+.sp.finished{filter:saturate(.75) brightness(.9)}
+.sp.lean{transform-origin:bottom left;transform:rotate(7deg);margin-right:16px}
+.sp.add{width:46px;height:150px;background:transparent;border:2px dashed #2c4258;color:#8ea6bb;font:300 30px system-ui,sans-serif;justify-content:center;border-radius:6px;box-shadow:none;margin-left:10px}
+.sstage .hint{align-self:center;padding:0 8px 22px;font:400 14px system-ui,sans-serif}
+.strack.empty{min-height:0;padding-top:34px}
+/* ---------- layout fixes: no sideways overflow, shelves align with cards, framed on desktop ---------- */
+main{overflow-x:hidden}
+#app.navy .shelf,.shelf{margin:0 0 16px}
+#app.navy .track,.track{padding:12px 8px 30px}
+#app.navy .shelf-head,.shelf-head{padding:0 8px 4px}
+.glass{left:0;right:0;border-radius:14px}
+.glass i:first-child{left:12px}.glass i:last-child{right:12px}
+#app.navy .sub{margin-bottom:14px}
+@media (min-width:520px){
+  body{align-items:center;background:#091728}
+  html{background:#091728}
+  #app{height:min(calc(100dvh - 32px),900px);margin:16px 0;border-radius:36px;box-shadow:0 0 0 1px #1b3550,0 24px 60px rgba(0,0,0,.55)}
+}
+/* ---------- spacing system: 16px page gutter, 10px between stacked cards, 22px between sections ---------- */
+#app main,#app.navy main{padding:16px 16px 28px}
+#app.tscr main{padding:16px 16px 0}
+/* page headings line up with the card edges (4px optical inset) */
+#app h1,#app.navy h1{margin:0 4px 4px;padding:0}
+#app .sub,#app.navy .sub{margin:0 4px 18px;padding:0}
+#app .phead{margin:0 0 4px}
+#app .phead h1{margin:0 4px}
+#app .back,#app.navy .back{padding:0 4px 12px}
+/* stacked cards */
+#app .tcard{margin:0 0 10px}
+#app .tscreen>.tcard:last-child{margin-bottom:0}
+/* sections */
+#app .tscreen,#app .shelf,#app.navy .shelf,#app .sshelf{margin:0 0 22px}
+#app main>*:last-child{margin-bottom:0}
+/* shelf headers + rows share the same inset */
+#app .shelf-head,#app.navy .shelf-head,#app .sshelf .shelf-head{padding:0 4px 10px}
+#app.navy .track,#app .track{padding:10px 4px 30px}
+.sstage{padding-top:4px}
+.strack{padding-top:10px}
+.sp.reading{padding-top:30px}
+/* ---------- timer page spacing ---------- */
+#app .tcard .timer{margin:14px 0 2px}
+#app .tcard .dots{margin:14px 4px 6px}
+#app .tcard .huge{margin:4px 0 0}
+#app .tcard .now{margin:12px 0 0}
+#app .tcard .now+.now{margin-top:8px}
+#app .tcard .stat3{margin-top:12px}
+#app .tcard .qa{margin-top:12px}
+#app .tcard #ytslot{margin-top:12px}
+#app .ctrl{margin:10px 0 10px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+'use strict';
+/* ---------- storage ---------- */
+const KEY='margin.v2';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,9);
+const dkey=d=>{d=new Date(d);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const daysAgo=n=>{const d=new Date();d.setDate(d.getDate()-n);return dkey(d)};
+const COLORS=['#e8531e','#f2c230','#1f3a6b','#2b7a6f','#d94b7b','#6b4ea0','#c0392b'];
+
+function seed(){
+  // Starter library: just the book being read. Progress is an estimate ("early Part 1"); adjust in the app.
+  const eden={id:uid(),title:'East of Eden',author:'John Steinbeck',pages:601,page:80,ch:null,status:'reading',color:COLORS[3],left:'',
+    characters:[
+      {name:'Adam Trask',desc:"Cyrus's younger son; Charles's half-brother",ch:null},
+      {name:'Charles Trask',desc:"Adam's older half-brother; fierce and physical",ch:null},
+      {name:'Cyrus Trask',desc:'Their father, a veteran with a wooden leg and big stories',ch:null},
+      {name:'Samuel Hamilton',desc:'Irish immigrant farmer in the Salinas Valley; the narrator\'s grandfather',ch:null}],
+    notes:[]};
+  return {books:[eden],sessions:[],goal:30,active:null};
+}
+function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return seed()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
+let db=load();
+let ui={view:'home',bookId:null,tab:'notes',sheet:null,noteType:'note'};
+
+/* ---------- helpers ---------- */
+const book=id=>db.books.find(b=>b.id===id);
+const pct=b=>b.pages?Math.min(100,Math.round(b.page/b.pages*100)):0;
+const minsOn=k=>db.sessions.filter(s=>s.date===k).reduce((a,s)=>a+s.mins,0);
+function elapsedMs(){const a=db.active;if(!a)return 0;return a.acc+(a.paused?0:Date.now()-a.resumed)}
+const mmss=ms=>{const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (h?h+':'+String(m).padStart(2,'0'):String(m).padStart(2,'0'))+':'+String(s%60).padStart(2,'0')};
+function streak(){
+  // forgiving: one missed day in a row is a "rest day" and does not break the streak
+  let n=0,gap=0,i=0;
+  if(minsOn(daysAgo(0))>0){n=1;i=1}else{i=1}
+  for(;i<400;i++){
+    if(minsOn(daysAgo(i))>0){n++;gap=0}
+    else{gap++;if(gap>=2)break}
+  }
+  return n;
+}
+function weekStrip(){
+  const out=[];
+  for(let i=6;i>=0;i--){
+    const k=daysAgo(i),m=minsOn(k),d=new Date();d.setDate(d.getDate()-i);
+    const prevRead=minsOn(daysAgo(i+1))>0,nextRead=i>0&&minsOn(daysAgo(i-1))>0;
+    out.push({k,m,l:'SMTWTFS'[d.getDay()],rest:m===0&&prevRead&&nextRead,today:i===0});
+  }
+  return out;
+}
+function recap(b){
+  const ev=b.notes.filter(n=>n.type==='event').slice(-3),notes=b.notes.filter(n=>n.type==='note').slice(-2);
+  const chars=b.characters.slice(-4);
+  let h='';
+  if(b.page>0) h+=`<p class="small muted">You're on ${b.ch?'chapter '+b.ch+', ':''}page ${b.page} of ${b.pages} (${pct(b)}%).</p>`;
+  if(b.left&&!ev.some(n=>n.text===b.left)) h+=`<p>${esc(b.left)}</p>`;
+  if(ev.length) h+=`<p class="small"><b>The story so far</b></p>`+ev.map(n=>`<p class="small">- ${n.ch?'Ch. '+n.ch+': ':''}${esc(n.text)}</p>`).join('');
+  if(notes.length) h+=`<p class="small"><b>Your recent notes</b></p>`+notes.map(n=>`<p class="small">- ${esc(n.text)}</p>`).join('');
+  if(chars.length) h+=`<p style="margin-top:8px">${chars.map(c=>`<span class="chip" title="${esc(c.desc)}">${esc(c.name)}</span>`).join('')}</p>`;
+  if(!h) h=`<p class="muted small">Nothing yet. Add notes, plot events and characters while you read and your recap builds itself.</p>`;
+  return `<div class="recap"><div class="tag">Previously on&hellip;</div>${h}</div>`;
+}
+const cover=(b,big)=>`<div class="cover ${big?'big':''}" style="background:${b.color}">${esc(b.title)}</div>`;
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;$('#app').appendChild(t);setTimeout(()=>t.remove(),2200)}
+
+/* ---------- views ---------- */
+function home(){
+  const todayM=minsOn(daysAgo(0)),p=Math.min(100,Math.round(todayM/db.goal*100));
+  const cur=db.books.filter(b=>b.status==='reading');
+  const pick=cur.find(b=>b.id===ui.pick)||cur[0];
+  const hr=new Date().getHours(),greet=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+  return `<h1>${greet}</h1><p class="sub">${todayM>=db.goal?'Goal met. Anything more is a bonus.':'A few quiet pages today?'}</p>
+  <div class="tscreen">
+  <div class="tcard mint"><div class="trow"><span class="ico">&#9889;</span><b style="flex:1">${streak()}-day streak</b><span class="more" style="cursor:default">rest days OK</span></div>
+    <div class="huge">${todayM}<small>/ ${db.goal} min today</small></div>
+    <div class="pbar"><i style="width:${p}%"></i></div>
+    <div class="wk">${weekStrip().map(d=>`<div class="${d.m?'done':d.rest?'rest':''}"><i>${d.m?'&#10003;':''}</i>${d.l}</div>`).join('')}</div></div>
+  </div>
+  ${shelf('Currently reading','#f08a24',cur,b=>coverBtn(b,'pick',pick&&pick.id===b.id),'The shelf is empty. Pull a book from your library.',{id:'cur'})}
+  ${cur.length&&pick?`<div class="tscreen"><div class="tcard lime"><div class="row" data-a="openBook" data-id="${pick.id}" style="cursor:pointer"><div class="grow"><div class="btitle">${esc(pick.title)}</div><div class="tsub" style="text-align:left;margin:2px 0 0">${esc(pick.author)} &middot; page ${pick.page} of ${pick.pages}</div></div><span class="more">open &rarr;</span></div>
+    <div class="pbar"><i style="width:${pct(pick)}%"></i></div>
+    <button class="navbtn" data-a="quickStart" data-id="${pick.id}">&#9654; Start reading &middot; ${db.goal} min</button>
+    <div style="text-align:center;margin-top:10px"><button class="more" style="border:0" data-a="sheet" data-s="goalPick">Change daily goal</button></div></div>
+    <div class="tcard pink notch">${recap(pick)}</div></div>`:`<div style="text-align:center"><button class="more" style="color:#c8f52f;border-color:#c8f52f" data-a="goto" data-v="library">Browse library</button></div>`}
+  ${sshelf('Up next',db.books.filter(b=>b.status==='want'),'Add books you want to read next',{add:1,id:'next'})}`;
+}
+const hash=s=>[...s].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
+function textOn(hex){const n=parseInt(hex.slice(1),16),l=(0.299*(n>>16)+0.587*(n>>8&255)+0.114*(n&255))/255;return l>.62?'#1d1916':'#fff8eb'}
+/* a face-out generated cover; action = what tapping it does */
+function coverBtn(b,action,sel){
+  return `<button class="bk v${hash(b.id)%3} ${sel?'sel':''}" style="--c:${b.color};--fg:${textOn(b.color)}" data-a="${action}" data-id="${b.id}" title="${esc(b.title)}">${b.status==='reading'?`<span class="badge">${pct(b)}%</span>`:''}<span class="t">${esc(b.title)}</span><span class="a">${esc(b.author)}</span></button>`;
+}
+/* a row of covers sliding behind a translucent coloured glass shelf */
+function shelf(title,color,list,render,empty,opt={}){
+  const id='t_'+(opt.id||title.replace(/\W/g,''));
+  return `<section class="shelf" style="--g:${color}"><div class="shelf-head"><h3>${title}</h3><span>${list.length} book${list.length===1?'':'s'}</span><button data-a="scroll" data-t="${id}" data-d="-1" aria-label="Scroll left">&lsaquo;</button><button data-a="scroll" data-t="${id}" data-d="1" aria-label="Scroll right">&rsaquo;</button></div>
+  <div class="stage"><div class="track" id="${id}">${list.length?list.map(render).join(''):`<span class="hint">${empty}</span>`}${opt.add?`<button class="bk add" data-a="sheet" data-s="addBook" aria-label="Add book">+</button>`:''}</div><div class="glass"><i></i><i></i></div></div></section>`;
+}
+/* typographic spines on a dark shelf: varied height, width, colour and lettering */
+const spineK=b=>b.title.length>20?.66:b.title.length>14?.8:1;   /* shrink type for long titles so they fit */
+function spineH(b){return Math.min(262,Math.max(170,140+Math.round(b.title.length*8.5)))+hash(b.id)%12}
+function spineW(b,v){return Math.max(30,Math.min(54,Math.round(20+b.pages/12)))+(v===3?6:0)}
+function sshelf(title,list,empty,opt={}){
+  const id='s_'+(opt.id||title.replace(/\W/g,'')),mh=list.length?Math.max(...list.map(spineH))+30:0;
+  const sp=b=>{const v=hash(b.id)%6,lean=b.status==='want'&&hash(b.id)%4===0;
+    return `<button class="sp v${v} ${b.status}${lean?' lean':''}" style="--c:${b.color};--fg:${textOn(b.color)};--k:${spineK(b)};width:${spineW(b,v)}px;height:${spineH(b)}px" data-a="openBook" data-id="${b.id}" title="${esc(b.title)} - ${esc(b.author)}"><span class="st">${esc(b.title)}</span><span class="sa">${esc(b.author)}</span></button>`};
+  return `<section class="sshelf"><div class="shelf-head"><h3>${title}</h3><span>${list.length} book${list.length===1?'':'s'}</span><button data-a="scroll" data-t="${id}" data-d="-1" aria-label="Scroll left">&lsaquo;</button><button data-a="scroll" data-t="${id}" data-d="1" aria-label="Scroll right">&rsaquo;</button></div>
+  <div class="sstage"><div class="strack${list.length?'':' empty'}" id="${id}"${mh?` style="min-height:${mh}px"`:''}>${list.length?list.map(sp).join(''):`<span class="hint">${empty}</span>`}${opt.add?`<button class="sp add" data-a="sheet" data-s="addBook" aria-label="Add book">+</button>`:''}</div><div class="sline"></div></div></section>`;
+}
+function library(){
+  const g=s=>db.books.filter(b=>b.status===s);
+  return `<div class="phead"><h1>Library</h1><button class="more solid" data-a="sheet" data-s="addBook">+ Add book</button></div><p class="sub">Tap a cover to open it.</p>
+  ${sshelf('Reading',g('reading'),'Nothing in progress')}
+  ${sshelf('Want to read',g('want'),'Books you want to read next live here',{add:1})}
+  ${sshelf('Finished',g('finished'),'Finished books settle here')}`;
+}
+function coverDiv(b){return `<div class="bk mini v${hash(b.id)%3}" style="--c:${b.color};--fg:${textOn(b.color)}"><span class="t">${esc(b.title)}</span></div>`}
+const chLabel=c=>c?'Chapter '+c:'Unsorted';
+/* group items by chapter; unsorted (no chapter) always last */
+function byChapter(list,desc){const m=new Map();list.forEach(n=>{const k=n.ch||0;if(!m.has(k))m.set(k,[]);m.get(k).push(n)});
+  return [...m.entries()].sort((a,b)=>a[0]&&b[0]?(desc?b[0]-a[0]:a[0]-b[0]):(a[0]?-1:1))}
+const noteHTML=n=>`<div class="note ${n.type}"><div class="meta">${n.type==='quote'?'Quote':'Note'} &middot; p.${n.page} &middot; ${new Date(n.t).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</div><div class="t">${esc(n.text)}</div></div>`;
+function timelineHTML(b){
+  const ev=b.notes.filter(n=>n.type==='event').sort((x,y)=>x.t-y.t);
+  const chs=new Set([...ev.map(e=>e.ch||0),...b.characters.map(c=>c.ch||0)]);
+  const order=[...chs].filter(Boolean).sort((a,c)=>a-c);if(chs.has(0))order.push(0);
+  if(!order.length) return `<div class="empty">Your story timeline builds as you read. Tap <b>Event</b> during a session to log what just happened.</div>`;
+  const nodes=order.map(c=>{
+    const es=ev.filter(e=>(e.ch||0)===c),cs=b.characters.filter(x=>(x.ch||0)===c);
+    return `<div class="tln"><i></i><div class="tlh">${chLabel(c)}</div>${es.map(e=>`<p>${esc(e.text)} <span>p.${e.page}</span></p>`).join('')}${cs.length?`<div class="tlc">New: ${cs.map(x=>`<span class="chip" title="${esc(x.desc)}">${esc(x.name)}</span>`).join('')}</div>`:''}</div>`}).join('');
+  const here=b.page>0?`<div class="tln now"><i></i><div class="tlh">You are here</div><p>${b.ch?'Chapter '+b.ch+', ':''}page ${b.page}</p></div>`:'';
+  return `<div class="tl">${nodes}${here}</div>`;
+}
+function bookView(){
+  const b=book(ui.bookId);if(!b)return library();
+  const sess=db.sessions.filter(s=>s.bookId===b.id).slice().reverse();
+  const plain=[...b.notes].filter(n=>n.type!=='event').sort((x,y)=>y.t-x.t),events=b.notes.filter(n=>n.type==='event');
+  let body='';
+  if(ui.tab==='notes') body=plain.length?byChapter(plain,true).map(([c,l])=>`<div class="chh">${chLabel(c)}<span>${l.length}</span></div>`+l.map(noteHTML).join('')).join(''):`<div class="empty">No notes yet. Capture them mid-session with one tap.</div>`;
+  if(ui.tab==='timeline') body=timelineHTML(b)+`<button class="more" style="margin-top:6px" data-a="sheet" data-s="note" data-nt="event">+ Add event</button>`;
+  if(ui.tab==='chars') body=(b.characters.length?b.characters.map(c=>`<div class="note"><b>${esc(c.name)}</b> <span class="muted small">${c.ch?'&middot; from ch. '+c.ch:''}</span><div class="small muted">${esc(c.desc)}</div></div>`).join(''):`<div class="empty">Keep track of who's who. No more &ldquo;wait, who is that?&rdquo;</div>`)+`<button class="more" style="margin-top:12px" data-a="sheet" data-s="char">+ Add character</button>`;
+  if(ui.tab==='sessions') body=sess.length?sess.map(s=>`<div class="note"><b>${s.mins} min</b> <span class="muted small">&middot; pp.${s.from}&ndash;${s.to} &middot; ${s.date}</span></div>`).join(''):`<div class="empty">No sessions logged.</div>`;
+  const statusSel=['reading','want','finished'].map(s=>`<option value="${s}" ${b.status===s?'selected':''}>${{reading:'Reading',want:'Want to read',finished:'Finished'}[s]}</option>`).join('');
+  const tabs=[['notes','Notes ('+plain.length+')'],['timeline','Timeline ('+events.length+')'],['chars','Characters ('+b.characters.length+')'],['sessions','Sessions']];
+  return `<button class="back" data-a="goto" data-v="library">&larr; Library</button>
+  <div class="tscreen">
+  <div class="tcard mint"><div class="row" style="align-items:flex-start">${coverDiv(b)}<div class="grow"><div class="btitle">${esc(b.title)}</div><div class="tsub" style="text-align:left;margin:2px 0 10px">${esc(b.author)}</div><select id="statusSel">${statusSel}</select>${b.why?`<div class="tsub" style="text-align:left;margin-top:10px">&ldquo;${esc(b.why)}&rdquo;</div>`:''}</div></div></div>
+  <div class="tcard lime notch"><span class="k">Progress</span><div class="huge">${pct(b)}<small>%</small></div>
+    <div class="pbar"><i style="width:${pct(b)}%"></i></div><div class="tsub">${b.ch?'Chapter '+b.ch+' &middot; ':''}Page ${b.page} of ${b.pages}</div>
+    ${b.status!=='finished'?`<button class="navbtn" data-a="quickStart" data-id="${b.id}">&#9654; Start reading &middot; ${db.goal} min</button>`:''}</div>
+  <div class="tcard blue notch"><div class="trow"><span class="ico">&#9835;</span><b style="flex:1">${b.audio?'Read-aloud linked':'Read-aloud'}</b><button class="more" data-a="sheet" data-s="audio">${b.audio?'Change':'Link YouTube'}</button></div>
+    <div class="tsub" style="text-align:left;margin-top:8px">${b.audio?'Plays in the timer screen and syncs with your session.':'Paste a YouTube link of someone reading this book.'}</div></div>
+  <div class="tcard pink notch">${recap(b)}</div>
+  <div class="tcard mint notch"><div class="ptabs">${tabs.map(([k,l])=>`<button class="${ui.tab===k?'on':''}" data-a="tab" data-t="${k}">${l}</button>`).join('')}</div>${body}</div>
+  </div>`;
+}
+const pad=n=>String(n).padStart(2,'0');
+function timerHTML(){const a=db.active,el=elapsedMs(),s=Math.floor((a.target?Math.abs(a.target-el):el)/1000);
+  return `<b>${pad(Math.floor(s/3600))}</b><i>:</i><b>${pad(Math.floor(s%3600/60))}</b><i>:</i><b>${pad(s%60)}</b>`}
+function session(){
+  const a=db.active;
+  if(!a){ // pre-session
+    const b=book(ui.bookId);if(!b){ui.view='home';return home()}
+    return `<button class="back" data-a="goto" data-v="home">&larr; Back</button>
+    <div class="tscreen"><div class="tcard mint"><div class="row" style="align-items:flex-start">${coverDiv(b)}<div class="grow"><div class="btitle">${esc(b.title)}</div><div class="tsub" style="text-align:left;margin:2px 0 0">${esc(b.author)}</div></div></div></div>
+    <div class="tcard pink notch">${recap(b)}</div>
+    <div class="tcard lime notch"><label class="chk"><input type="checkbox" id="focusOpt"><div>Phone-free mode<span>Dims the screen and hides distractions</span></div></label>
+      <button class="navbtn" data-a="beginTimer" data-id="${b.id}">&#9654; Begin &middot; ${db.goal} min countdown</button></div></div>`;
+  }
+  const b=book(a.bookId);if(a.page==null)a.page=a.startPage;if(a.ch==null)a.ch=b.ch||1;
+  const cov=Math.max(0,a.page-a.startPage),hrs=Math.max(elapsedMs(),60000)/3600000,pace=Math.round(cov/hrs*10)/10,left=Math.max(0,b.pages-a.page);
+  const f=a.target?elapsedMs()/a.target:0,au=b.audio;
+  return `<div class="tscreen">
+  <div class="tcard mint">
+    <div class="trow"><span>${esc(b.title)}</span><button class="more" data-a="toggleFocus">${a.focus?'Leave phone-free':'Phone-free'}</button></div>
+    <div class="timer ${a.target&&f>=1?'over':''}" id="timer">${timerHTML()}</div>
+    <div class="tlab"><span>H</span><span></span><span>M</span><span></span><span>S</span></div>
+    <div class="dots" id="dots"><i class="${f>=1/3?'on':''}"></i><s></s><i class="${f>=2/3?'on':''}"></i><s></s><i class="${f>=1?'on':''}">&#10003;</i></div>
+    <div class="tsub" id="tlabel">${timerLabel()}</div>
+  </div>
+  <div class="tcard lime notch"><span class="k">Pages this session</span><div class="huge">+${cov}<small>pp</small></div></div>
+  ${au?`<div class="tcard blue notch"><div class="trow"><span class="ico">&#9835;</span><b style="flex:1">Listening along</b><button class="more" data-a="sheet" data-s="audio">Change</button></div>
+    <div id="ytslot"></div><div class="tsub">${au.t>5?'Resumes at '+mmss(au.t*1000)+'. ':''}Press play: your timer follows the video.</div></div>`
+   :`<div class="tcard blue notch"><div class="trow"><span class="ico">&#9835;</span><b style="flex:1">Listen along</b><button class="more" data-a="sheet" data-s="audio">Link YouTube</button></div><div class="tsub" style="text-align:left;margin-top:8px">Paste a YouTube link of someone reading this book.</div></div>`}
+  <div class="tcard pink notch">
+    <div class="trow"><span class="ico">&#8767;</span><b style="flex:1">Statistics &amp; details</b><button class="more" data-a="sheet" data-s="recap">Recap</button></div>
+    <div class="now"><b>Now at: page ${a.page}</b><button class="rb" data-a="pageStep" data-d="-1">&minus;1</button><button class="rb" data-a="pageStep" data-d="1">+1</button><button class="rb" data-a="pageStep" data-d="10">+10</button></div>
+    <div class="now" style="margin:0 0 12px"><b>Chapter ${a.ch}</b><button class="rb" data-a="chStep" data-d="-1">&minus;</button><button class="rb" data-a="chStep" data-d="1">+</button></div>
+    <div class="stat3"><div><small>Covered</small><b>${cov}</b> <u>pp</u></div><div><small>Speed</small><b id="s_pace">${pace}</b> <u>pp/h</u></div><div><small>Left</small><b>${left}</b> <u>pp</u></div></div>
+    <div class="qa"><button data-a="sheet" data-s="note" data-nt="note">&#9998; Note</button><button data-a="sheet" data-s="note" data-nt="quote">&ldquo; Quote</button><button data-a="sheet" data-s="note" data-nt="event">&#9873; Event</button><button data-a="sheet" data-s="char">&#9786; Character</button></div>
+  </div>
+  <div class="ctrl"><button class="${a.paused?'on':''}" data-a="play" aria-label="Resume">&#9654;</button><button class="${a.paused?'':'on'}" data-a="pausebtn" aria-label="Pause">&#10074;&#10074;</button><button data-a="sheet" data-s="end" aria-label="Finish">&#9632;</button></div>
+  </div>`;
+}
+function stats(){
+  const bars=[];for(let i=6;i>=0;i--){const k=daysAgo(i),d=new Date();d.setDate(d.getDate()-i);bars.push({m:minsOn(k),l:'SMTWTFS'[d.getDay()]})}
+  const mx=Math.max(30,...bars.map(b=>b.m));
+  const tot=db.sessions.reduce((a,s)=>a+s.mins,0),pg=db.sessions.reduce((a,s)=>a+Math.max(0,s.to-s.from),0),fin=db.books.filter(b=>b.status==='finished').length;
+  const hrs=Math.round(tot/60*10)/10;
+  return `<h1>Stats</h1><p class="sub">Gentle numbers, no guilt.</p>
+  <div class="tscreen">
+  <div class="tcard mint"><div class="trow"><span class="ico">&#9889;</span><b style="flex:1">Streak</b><span class="more" style="cursor:default">rest days OK</span></div>
+    <div class="huge">${streak()}<small>days</small></div>
+    <div class="wk">${weekStrip().map(d=>`<div class="${d.m?'done':d.rest?'rest':''}"><i>${d.m?'&#10003;':''}</i>${d.l}</div>`).join('')}</div></div>
+  <div class="tcard lime notch"><span class="k">Time read</span><div class="huge">${hrs}<small>hrs</small></div>
+    <div class="stat3"><div><small>Pages</small><b>${pg}</b></div><div><small>Sessions</small><b>${db.sessions.length}</b></div><div><small>Finished</small><b>${fin}</b></div></div></div>
+  <div class="tcard pink notch"><div class="trow"><span class="ico">&#8767;</span><b style="flex:1">Last 7 days</b><span class="tsub" style="margin:0">minutes</span></div>
+    <div class="bars">${bars.map(b=>`<div><em>${b.m||''}</em><i style="height:${b.m/mx*100}%"></i>${b.l}</div>`).join('')}</div></div>
+  <div class="tcard blue notch"><div class="trow"><span class="ico">&#9678;</span><b style="flex:1">Daily goal</b></div>
+    <div class="now" style="margin-bottom:0"><div class="huge" style="margin:0;flex:1;justify-content:flex-start;font-size:64px">${db.goal}<small>min</small></div><button class="rb" style="height:46px;min-width:46px;font-size:20px" data-a="goal" data-d="-5">&minus;</button><button class="rb" style="height:46px;min-width:46px;font-size:20px" data-a="goal" data-d="5">+</button></div>
+    <div class="tsub" style="text-align:left;margin-top:8px">Small goals build real habits.</div></div>
+  <p style="text-align:center;margin:10px 0 0"><button class="more" style="color:#8ea6bb;border-color:#2c4258" data-a="reset">Reset all data</button></p>
+  </div>`;
+}
+const ICONS={home:'<path d="M3 11l9-8 9 8M5 10v10h14V10"/>',library:'<path d="M4 4h4v16H4zM10 4h4v16h-4zM17 5l3.5 1-4 14-3.5-1z"/>',stats:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'};
+function sheet(){
+  const s=ui.sheet;if(!s)return '';
+  let inner='';
+  if(s==='audio'){const b=book(db.active?db.active.bookId:ui.bookId),cur=b.audio?(b.audio.vid?'https://youtu.be/'+b.audio.vid:'https://youtube.com/playlist?list='+b.audio.list):'';
+    inner=`<h3>Listen along</h3><p class="small muted sans">Paste a YouTube link (video or playlist) of someone reading this book. It plays inside the app and your timer follows play and pause.</p><label>YouTube link</label><input id="f_url" placeholder="https://youtube.com/watch?v=..." value="${esc(cur)}"><p class="small muted sans">Embedded player only: on most phones the audio stops when the screen locks.</p><div class="row" style="margin-top:12px">${b.audio?'<button class="btn ghost grow" data-a="clearAudio">Remove</button>':''}<button class="btn grow" data-a="saveAudio">Save</button></div>`}
+  if(s==='recap')inner=`<h3>Previously on&hellip;</h3>${recap(book(db.active?db.active.bookId:ui.bookId))}<button class="btn ghost block" style="margin-top:12px" data-a="closeSheet">Back to reading</button>`;
+  if(s==='goalPick') inner=`<h3>Daily reading goal</h3><p class="muted small sans">Your countdown starts from this each time you tap Start.</p><div>${[10,15,20,30,45,60,90].map(m=>`<span class="chip btnlike ${db.goal===m?'sel':''}" style="font-size:16px;padding:8px 16px;margin:4px 6px 4px 0" data-a="setGoal" data-m="${m}">${m} min</span>`).join('')}</div>`;
+  if(s==='addBook') inner=`<h3>Add a book</h3><label>Add to</label><div>${[['want','Want to read'],['reading','Reading now']].map(([k,l])=>`<span class="chip btnlike ${(ui.addTo||'want')===k?'sel':''}" data-a="addTo" data-t="${k}">${l}</span>`).join('')}</div><label>Title</label><input id="f_title" placeholder="Title"><label>Author</label><input id="f_author" placeholder="Author"><label>Pages</label><input id="f_pages" type="number" inputmode="numeric" placeholder="e.g. 320">
+    <label>Why do you want to read it? (optional)</label><input id="f_why" placeholder="A friend's pick, saw the film, book club..."><p class="small muted sans">ISBN scan and search arrive in the real build.</p><div class="row"><button class="btn ghost grow" data-a="closeSheet">Cancel</button><button class="btn grow" data-a="saveBook">Add</button></div>`;
+  if(s==='note'){const a=db.active,b=book(a?a.bookId:ui.bookId),ch=a?a.ch:(b.ch||1);
+    const T={note:['Quick note','What are you thinking?'],quote:['Save a quote','The line that stuck with you'],event:['Add to timeline','What happened? One plot point.']}[ui.noteType];
+    inner=`<h3>${T[0]}</h3><div style="margin-bottom:8px">${['note','quote','event'].map(t=>`<span class="chip btnlike ${ui.noteType===t?'sel':''}" data-a="noteType" data-t="${t}">${{note:'Note',quote:'Quote',event:'Plot event'}[t]}</span>`).join('')}</div>
+    <textarea id="f_text" placeholder="${T[1]}" autofocus></textarea><label>Chapter</label><input id="f_ch" type="number" inputmode="numeric" min="1" value="${ch}"><div class="row" style="margin-top:14px"><button class="btn ghost grow" data-a="closeSheet">Cancel</button><button class="btn grow" data-a="saveNote">Save</button></div>`}
+  if(s==='char') inner=`<h3>Add character</h3><label>Name</label><input id="f_name" placeholder="Name"><label>Who are they?</label><input id="f_desc" placeholder="One line: role, traits, relationships"><div class="row" style="margin-top:14px"><button class="btn ghost grow" data-a="closeSheet">Cancel</button><button class="btn grow" data-a="saveChar">Add</button></div>`;
+  if(s==='end'){const b=book(db.active.bookId);inner=`<h3>Nice session &middot; ${Math.max(1,Math.round(elapsedMs()/60000))} min</h3><label>What page are you on now?</label><input id="f_page" type="number" inputmode="numeric" value="${db.active.page??b.page}"><label>Chapter</label><input id="f_ch" type="number" inputmode="numeric" min="1" value="${db.active.ch||b.ch||1}"><label>Where did you leave off? (adds to your timeline)</label><textarea id="f_left" placeholder="One line is plenty."></textarea>
+    <div class="row" style="margin-top:14px"><button class="btn ghost grow" data-a="closeSheet">Keep reading</button><button class="btn grow" data-a="saveSession">Save</button></div>`}
+  return `<div class="scrim" data-a="scrim"><div class="sheet">${inner}</div></div>`;
+}
+
+function render(){
+  const app=$('#app'),focus=db.active&&db.active.focus&&ui.view==='session';
+  const tscr=db.active&&ui.view==='session';const navy=!tscr;app.className=(focus?'focus ':'')+(tscr?'tscr':'')+(navy?'navy':'');
+  let m;
+  switch(ui.view){case 'library':m=library();break;case 'book':m=bookView();break;case 'session':m=session();break;case 'stats':m=stats();break;default:m=home()}
+  const navOn=ui.view==='book'?'library':ui.view==='session'?'home':ui.view;
+  const nav=tscr?'':`<nav class="sans">${['home','library','stats'].map(v=>`<button class="${navOn===v?'on':''}" data-a="goto" data-v="${v}"><svg viewBox="0 0 24 24">${ICONS[v]}</svg>${{home:'Today',library:'Library',stats:'Stats'}[v]}</button>`).join('')}</nav>`;
+  
+  app.innerHTML=`<main>${m}</main>${nav}${sheet()}`;
+  const ta=app.querySelector('textarea,#f_title,#f_name');if(ta&&ui.sheet&&ui.sheet!=='end')ta.focus();
+  syncAudio();
+}
+
+/* ---------- actions ---------- */
+let wake=null;
+async function lock(on){try{if(on&&'wakeLock' in navigator)wake=await navigator.wakeLock.request('screen');else if(wake){await wake.release();wake=null}}catch(e){}}
+const val=id=>($('#'+id)?.value||'').trim();
+const A={
+  goto(e){if(db.active&&e.dataset.v!=='home'&&ui.view==='session'&&db.active.focus){toast('Finish your session to leave phone-free mode');return}
+    ui.view=e.dataset.v;ui.sheet=null;
+    if(ui.view==='home'&&db.active)ui.view='session'},
+  pick(e){const cur=db.books.filter(b=>b.status==='reading'),sel=cur.find(b=>b.id===ui.pick)||cur[0];
+    if(sel&&sel.id===e.dataset.id)return A.openBook(e);   // tapping the selected cover opens its book page
+    ui.pick=e.dataset.id},
+  scroll(e){const t=document.getElementById(e.dataset.t);t.scrollBy({left:e.dataset.d*220,behavior:'smooth'});return false},
+  openBook(e){ui.bookId=e.dataset.id;ui.view='book';ui.tab='notes'},
+  tab(e){ui.tab=e.dataset.t},
+  startSession(e){ui.bookId=e.dataset.id;ui.view='session'},
+  beginTimer(e){const b=book(e.dataset.id),focus=$('#focusOpt')?.checked;
+    db.active={bookId:b.id,acc:0,resumed:Date.now(),paused:false,startPage:b.page,focus:!!focus,notes:0,page:b.page,ch:b.ch||1,target:db.goal*60000,done:false};
+    if(b.status!=='reading')b.status='reading';
+    if(focus)lock(true);save()},
+  quickStart(e){ui.bookId=e.dataset.id;ui.view='session';A.beginTimer(e)},
+  toggleFocus(){db.active.focus=!db.active.focus;lock(db.active.focus);save()},
+  setGoal(e){db.goal=parseInt(e.dataset.m);ui.sheet=null;toast('Daily goal: '+db.goal+' min');save()},
+  pause(){setPaused(!db.active.paused);audioCmd(db.active.paused?'pause':'play')},
+  play(){setPaused(false);audioCmd('play')},
+  pausebtn(){setPaused(true);audioCmd('pause')},
+  pageStep(e){const a=db.active,b=book(a.bookId);a.page=Math.max(0,Math.min(b.pages,(a.page??a.startPage)+parseInt(e.dataset.d)));save()},
+  saveAudio(){const p=ytParse(val('f_url'));if(!p){toast("That doesn't look like a YouTube link");return false}
+    const b=book(db.active?db.active.bookId:ui.bookId);b.audio={vid:p.vid||null,list:p.list||null,t:0};ui.sheet=null;toast('Linked. Press play to listen');save()},
+  clearAudio(){const b=book(db.active?db.active.bookId:ui.bookId);delete b.audio;ui.sheet=null;save()},
+  sheet(e){ui.sheet=e.dataset.s;if(e.dataset.s==='addBook')ui.addTo='want';if(e.dataset.nt)ui.noteType=e.dataset.nt},
+  closeSheet(){ui.sheet=null},
+  addTo(e){const ids=['f_title','f_author','f_pages','f_why'],v=ids.map(val);ui.addTo=e.dataset.t;render();ids.forEach((id,i)=>{if(v[i])$('#'+id).value=v[i]});return false},
+  scrim(e,ev){if(ev.target!==e)return false;ui.sheet=null},
+  noteType(e){ui.noteType=e.dataset.t;const t=val('f_text'),c=val('f_ch');render();if(t)$('#f_text').value=t;if(c)$('#f_ch').value=c},
+  chStep(e){const a=db.active;a.ch=Math.max(1,(a.ch||1)+parseInt(e.dataset.d));save()},
+  saveBook(){const title=val('f_title');if(!title){toast('Add a title');return false}
+    db.books.push({id:uid(),title,author:val('f_author')||'Unknown',pages:parseInt(val('f_pages'))||300,page:0,status:ui.addTo||'want',why:val('f_why'),color:COLORS[db.books.length%COLORS.length],left:'',characters:[],notes:[]});
+    const where=ui.addTo||'want';ui.addTo='want';ui.sheet=null;toast(where==='reading'?'Added to Reading':'Added to Want to read');save()},
+  saveNote(){const text=val('f_text');if(!text)return false;const a=db.active,b=book(a?a.bookId:ui.bookId);
+    const ch=parseInt(val('f_ch'))||(a?a.ch:b.ch)||null;
+    b.notes.push({id:uid(),type:ui.noteType,text,ch,page:a&&a.page!=null?a.page:b.page,t:Date.now()});if(a)a.notes++;
+    ui.sheet=null;toast({quote:'Quote saved',event:'Added to timeline'}[ui.noteType]||'Note saved');save()},
+  saveChar(){const name=val('f_name');if(!name)return false;const b=book(db.active?db.active.bookId:ui.bookId);
+    b.characters.push({name,desc:val('f_desc')||'No description yet',ch:(db.active?db.active.ch:b.ch)||null});if(db.active)db.active.notes++;ui.sheet=null;toast(name+' added');save()},
+  saveSession(){audioSavePos();const a=db.active,b=book(a.bookId),to=parseInt(val('f_page'));
+    const mins=Math.max(1,Math.round(elapsedMs()/60000)),np=isNaN(to)?b.page:Math.max(0,Math.min(b.pages,to));
+    db.sessions.push({id:uid(),bookId:b.id,date:dkey(Date.now()),mins,from:a.startPage,to:np});
+    b.page=np;const chp=parseInt(val('f_ch'));if(chp)b.ch=chp;
+    const left=val('f_left');if(left){b.left=left;b.notes.push({id:uid(),type:'event',text:left,ch:b.ch||null,page:np,t:Date.now()})}
+    let msg=`+${Math.max(0,np-a.startPage)} pages in ${mins} min`;
+    if(np>=b.pages){b.status='finished';msg='Finished! '+msg}
+    db.active=null;lock(false);ui.sheet=null;ui.view='book';ui.bookId=b.id;toast(msg);save()},
+  goal(e){db.goal=Math.max(5,Math.min(180,db.goal+parseInt(e.dataset.d)));save()},
+  reset(){if(confirm('Erase everything and start over?')){localStorage.removeItem(KEY);db=seed();ui={view:'home',bookId:null,tab:'notes',sheet:null,noteType:'note'};save()}}
+};
+document.addEventListener('click',ev=>{
+  const e=ev.target.closest('[data-a]');if(!e)return;
+  if(e.dataset.a==='scrim'&&ev.target!==e)return;
+  const r=A[e.dataset.a]?.(e,ev);if(r===false)return;render();
+});
+document.addEventListener('change',ev=>{
+  if(ev.target.id==='statusSel'){const b=book(ui.bookId);b.status=ev.target.value;if(b.status==='finished')b.page=b.pages;save();render()}
+});
+function setPaused(p){const a=db.active;if(!a)return;if(p&&!a.paused){a.acc+=Date.now()-a.resumed;a.paused=true}else if(!p&&a.paused){a.paused=false;a.resumed=Date.now()}save()}
+function timerLabel(){const a=db.active;if(a.paused)return 'Paused';if(!a.target)return 'Started at p.'+a.startPage;return elapsedMs()<a.target?'left of your '+db.goal+' min goal':'Goal reached. Bonus time!'}
+
+/* ---------- YouTube read-aloud (IFrame Player API) ---------- */
+const AU={player:null,key:null,ready:false};
+function ytParse(url){
+  try{const u=new URL(url.trim());let vid=null;const list=u.searchParams.get('list');
+    if(u.hostname.includes('youtu.be'))vid=u.pathname.slice(1).split('/')[0];
+    else if(u.hostname.includes('youtube.com')){vid=u.searchParams.get('v');const m=u.pathname.match(/^\/(embed|live|shorts)\/([\w-]{11})/);if(!vid&&m)vid=m[2]}
+    if(vid&&!/^[\w-]{11}$/.test(vid))vid=null;
+    return vid||list?{vid,list}:null}catch(e){return null}}
+function ensureWrap(){let w=$('#ytwrap');if(!w){w=document.createElement('div');w.id='ytwrap';w.innerHTML='<div id="ytp"></div>';document.body.appendChild(w)}return w}
+function destroyAudio(){if(AU.player){try{AU.player.destroy()}catch(e){}}AU.player=null;AU.key=null;AU.ready=false;const w=$('#ytwrap');if(w){w.className='';w.style.display='none';w.innerHTML='<div id="ytp"></div>'}}
+function loadYT(cb){if(window.YT&&window.YT.Player)return cb();const prev=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=()=>{prev&&prev();cb()};
+  if(!$('#ytapi')){const s=document.createElement('script');s.id='ytapi';s.src='https://www.youtube.com/iframe_api';s.onerror=()=>toast('Could not reach YouTube');document.head.appendChild(s)}}
+function audioCmd(c){try{if(AU.player&&AU.ready)c==='play'?AU.player.playVideo():AU.player.pauseVideo()}catch(e){}}
+function audioSavePos(){const a=db.active,b=a&&book(a.bookId);try{if(b&&b.audio&&AU.player&&AU.ready){b.audio.t=Math.floor(AU.player.getCurrentTime()||0);save()}}catch(e){}}
+function onAudioState(e){const a=db.active;if(!a)return;const s=e.data;
+  if(s===1&&a.paused){setPaused(false);render()}
+  else if((s===2||s===0)&&!a.paused){setPaused(true);render()}}
+function syncAudio(){
+  const a=db.active,b=a&&book(a.bookId),au=b&&b.audio;
+  if(!au){if(AU.key)destroyAudio();return}
+  const key=(au.vid||'')+'|'+(au.list||'');
+  if(AU.key&&AU.key!==key)destroyAudio();
+  const w=ensureWrap();w.style.display='block';
+  if(AU.key!==key){AU.key=key;AU.ready=false;
+    loadYT(()=>{if(AU.key!==key||AU.player)return;
+      AU.player=new YT.Player('ytp',{width:'100%',height:'100%',videoId:au.vid||undefined,
+        playerVars:Object.assign({playsinline:1,rel:0,start:Math.floor(au.t||0)},au.list?{listType:'playlist',list:au.list}:{}),
+        events:{onReady:()=>{AU.ready=true},onStateChange:onAudioState}})})}
+  placeAudio();
+}
+/* the player lives outside #app so re-renders don't reload it; pin it over the #ytslot placeholder */
+function placeAudio(){const w=$('#ytwrap');if(!w||w.style.display==='none')return;const slot=$('#ytslot'),mn=$('main');
+  if(slot&&mn){const r=slot.getBoundingClientRect(),m=mn.getBoundingClientRect();w.className='full';
+    Object.assign(w.style,{top:r.top+'px',left:r.left+'px',width:r.width+'px',height:r.height+'px',clipPath:`inset(${Math.max(0,m.top-r.top)}px 0 ${Math.max(0,r.bottom-m.bottom)}px 0)`})}
+  else{w.className='mini';Object.assign(w.style,{top:'',left:'',width:'',height:'',clipPath:'none'})}}
+document.addEventListener('scroll',placeAudio,true);window.addEventListener('resize',placeAudio);
+
+let tick=0;
+setInterval(()=>{const a=db.active;if(!a)return;
+  const t=$('#timer');if(t){t.innerHTML=timerHTML();t.classList.toggle('over',!!a.target&&elapsedMs()>=a.target)}
+  const l=$('#tlabel');if(l)l.textContent=timerLabel();
+  const f=a.target?elapsedMs()/a.target:0;document.querySelectorAll('#dots i').forEach((d,i)=>d.classList.toggle('on',f>=(i+1)/3));
+  const sp=$('#s_pace');if(sp){const hrs=Math.max(elapsedMs(),60000)/3600000,cov=Math.max(0,(a.page??a.startPage)-a.startPage);sp.textContent=Math.round(cov/hrs*10)/10}
+  if(a.target&&!a.done&&elapsedMs()>=a.target){a.done=true;save();toast('Daily goal reached!');try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}}
+  if(++tick%20===0)audioSavePos()},500);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&db.active?.focus)lock(true)});
+
+if(db.active){ui.view='session';ui.bookId=db.active.bookId}
+render();
+if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>

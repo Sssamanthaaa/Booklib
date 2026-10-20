@@ -1,0 +1,13 @@
+{
+  "name": "Margin - reading companion",
+  "short_name": "Margin",
+  "description": "Read more, remember more. A reading habit app with a built-in companion.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f1e7",
+  "theme_color": "#f6f1e7",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
