@@ -32,3 +32,7 @@ Or serve the folder with any static file server. It is plain HTML, CSS and JavaS
 - Installing to a phone home screen needs the app to be served over HTTPS.
 - The YouTube player is the standard embedded player: on most phones audio stops when the screen locks.
 - Starter data is one book (East of Eden). Use **Stats > Reset all data** to start over.
+
+## iPhone app
+
+A native SwiftUI version is in progress in [ios/](ios/README.md): setup steps, source map, roadmap and parity checklist are there.
